@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>市场活动全链路泳道图（协作版）</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f5f6fa;
+  color: #2C2C2A;
+  padding: 24px;
+  min-width: 1500px;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex-wrap: wrap;
+}
+.toolbar h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-right: auto;
+}
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-block;
+  margin-right: 6px;
+  animation: pulse 2s infinite;
+}
+.sync-dot.saving { background: #F59E0B; animation: none; }
+.sync-dot.error { background: #DC2626; animation: none; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.sync-text { font-size: 12px; color: #6b7280; }
+.btn {
+  padding: 7px 14px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #374151;
+  transition: all 0.15s;
+}
+.btn:hover { background: #f9fafb; border-color: #9ca3af; }
+.btn.primary { background: #2E5C8A; color: #fff; border-color: #2E5C8A; }
+.btn.primary:hover { background: #1A3A5C; }
+.btn.danger { color: #DC2626; border-color: #FCA5A5; }
+.btn.success { background: #059669; color: #fff; border-color: #059669; }
+.btn.success:hover { background: #047857; }
+.btn.active { background: #FEF3C7; border-color: #F59E0B; color: #92400E; }
+
+/* 筛选器区 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.filter-group label {
+  color: #6b7280;
+  font-weight: 500;
+  margin-right: 4px;
+}
+.filter-chip {
+  padding: 4px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #6b7280;
+  background: #fff;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.filter-chip:hover { border-color: #9ca3af; }
+.filter-chip.active {
+  background: #2E5C8A; color: #fff; border-color: #2E5C8A;
+  font-weight: 500;
+}
+.filter-chip .count {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.1);
+}
+.filter-chip.active .count { background: rgba(255,255,255,0.25); }
+
+/* 进度概览 */
+.meta {
+  margin-bottom: 16px;
+  padding: 14px 20px;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  font-size: 13px;
+  color: #6b7280;
+  flex-wrap: wrap;
+}
+.meta b { color: #1a1a1a; font-weight: 600; font-size: 15px; }
+.meta .pain { color: #DC2626; }
+.progress-bar {
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+  height: 22px;
+  background: #f3f4f6;
+  border-radius: 11px;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+}
+.progress-seg { height: 100%; transition: width 0.3s; }
+.progress-seg.done { background: #10B981; }
+.progress-seg.doing { background: #F59E0B; }
+.progress-seg.blocked { background: #6B7280; }
+.progress-seg.todo { background: #E5E7EB; }
+.progress-text {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-shadow: 0 0 3px #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 180px repeat(7, 1fr);
+  gap: 6px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+}
+.corner {}
+.stage-head {
+  background: linear-gradient(135deg,#2E5C8A 0%,#1A3A5C 100%);
+  color: #fff;
+  padding: 12px 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+.stage-title { font-size: 13px; font-weight: 600; }
+.stage-sub { font-size: 11px; opacity: 0.75; margin-top: 3px; }
+
+.lane-head {
+  padding: 14px 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lane-title { font-size: 15px; font-weight: 600; }
+.lane-sub { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.lane-stats { font-size: 11px; color: #6b7280; margin-top: 6px; }
+.lane-stats b { font-size: 13px; font-weight: 600; }
+
+.cell {
+  background: #fafbfc;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 80px;
+  position: relative;
+}
+.cell.empty {
+  background: repeating-linear-gradient(45deg, #fafbfc, #fafbfc 6px, #f0f1f3 6px, #f0f1f3 7px);
+}
+
+/* 节点基础样式 */
+.node {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 10px 8px 14px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #2C2C2A;
+  position: relative;
+  transition: all 0.15s;
+  overflow: hidden;
+}
+.node:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 5;
+}
+
+/* 优先级左边竖条 */
+.node.prio-P0 { border-left: 4px solid #B91C1C; }
+.node.prio-P1 { border-left: 4px solid #EA580C; }
+.node.prio-P2 { border-left: 4px solid #2563EB; }
+.node.prio-P3 { border-left: 4px solid #9CA3AF; }
+
+/* 状态样式：done 变浅、blocked 灰、doing 高亮 */
+.node.status-done {
+  opacity: 0.65;
+  background: #F0FDF4;
+}
+.node.status-done .node-text {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+.node.status-doing {
+  background: #FFFBEB;
+  box-shadow: 0 0 0 1px #FDE68A inset;
+}
+.node.status-blocked {
+  background: #F3F4F6;
+  opacity: 0.85;
+}
+
+/* 痛点标记：小红圆点 */
+.node.pain { background-image: linear-gradient(to right, #fff 0%, #fff 98%, #DC2626 98%, #DC2626 100%); }
+.node.pain.status-done { background-image: none; }
+
+/* 节点头部：状态徽章 + 优先级徽章 + 负责人 */
+.node-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 3px;
+  flex-wrap: wrap;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  padding: 1px 6px 1px 4px;
+  border-radius: 10px;
+  font-weight: 500;
+  user-select: none;
+  cursor: pointer;
+}
+.status-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-badge.todo    { background: #FEF2F2; color: #991B1B; }
+.status-badge.todo .dot    { background: #DC2626; }
+.status-badge.doing   { background: #FEF3C7; color: #92400E; }
+.status-badge.doing .dot   { background: #F59E0B; }
+.status-badge.done    { background: #D1FAE5; color: #065F46; }
+.status-badge.done .dot    { background: #10B981; }
+.status-badge.blocked { background: #E5E7EB; color: #374151; }
+.status-badge.blocked .dot { background: #6B7280; }
+body.editing .status-badge:hover { outline: 2px solid #F59E0B; }
+
+.prio-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  user-select: none;
+}
+.prio-badge.P0 { background: #B91C1C; color: #fff; }
+.prio-badge.P1 { background: #EA580C; color: #fff; }
+.prio-badge.P2 { background: #DBEAFE; color: #1E40AF; }
+.prio-badge.P3 { background: #F3F4F6; color: #6b7280; }
+body.editing .prio-badge { cursor: pointer; }
+body.editing .prio-badge:hover { outline: 2px solid #F59E0B; }
+
+.owner-tag {
+  font-size: 10px;
+  color: #6b7280;
+  margin-left: auto;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.owner-tag.empty { color: #d1d5db; font-style: italic; }
+body.editing .owner-tag:hover { color: #2E5C8A; }
+
+/* 编辑模式 */
+body.editing .node {
+  cursor: move;
+  border-style: dashed;
+}
+body.editing .node:hover {
+  border-color: #F59E0B;
+}
+body.editing .node-text {
+  cursor: text;
+}
+
+.node-actions {
+  display: none;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  gap: 2px;
+}
+body.editing .node:hover .node-actions { display: flex; }
+.node-actions button {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.btn-pain { background: #FEE2E2; color: #DC2626; }
+.btn-pain.active { background: #DC2626; color: #fff; }
+.btn-del { background: #fff; color: #6b7280; }
+.btn-del:hover { background: #DC2626; color: #fff; }
+
+.add-node {
+  display: none;
+  width: 100%;
+  padding: 6px;
+  border: 1px dashed #9ca3af;
+  background: rgba(255,255,255,0.5);
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 11px;
+  transition: all 0.15s;
+}
+.add-node:hover {
+  background: #fff;
+  border-color: #2E5C8A;
+  color: #2E5C8A;
+}
+body.editing .add-node { display: block; }
+
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 400;
+}
+
+.node.dimmed { opacity: 0.25; }
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.2s;
+  z-index: 1000;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: #DC2626; }
+
+.help {
+  background: #FEF3C7;
+  border: 1px solid #FCD34D;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #92400E;
+  display: none;
+}
+body.editing .help { display: block; }
+.help b { font-weight: 600; }
+
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+.loading-overlay.show { display: flex; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2E5C8A;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media print {
+  body { background: #fff; padding: 0; min-width: auto; }
+  .toolbar, .filter-bar, .help { display: none; }
+  .grid { box-shadow: none; }
+  .add-node, .node-actions { display: none !important; }
+  .node.dimmed { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>市场活动全链路</h1>
+  <span style="display:flex;align-items:center;">
+    <span class="sync-dot" id="sync-dot"></span>
+    <span class="sync-text" id="sync-text">已同步</span>
+  </span>
+  <button class="btn primary" id="btn-edit">✏️ 进入编辑模式</button>
+  <button class="btn" id="btn-refresh">🔄 刷新</button>
+  <button class="btn" id="btn-print">🖨️ 打印/PDF</button>
+  <button class="btn danger" id="btn-reset">↺ 重置</button>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-group">
+    <label>状态：</label>
+    <span class="filter-chip active" data-filter="status" data-value="all">全部<span class="count" id="cnt-all">0</span></span>
+    <span class="filter-chip" data-filter="status" data-value="todo"><span style="color:#DC2626">●</span> 待开发<span class="count" id="cnt-todo">0</span></span>
+    <span class="filter-chip" data-filter="status" data-value="doing"><span style="color:#F59E0B">●</span> 开发中<span class="count" id="cnt-doing">0</span></span>
+    <span class="filter-chip" data-filter="status" data-value="done"><span style="color:#10B981">●</span> 已完成<span class="count" id="cnt-done">0</span></span>
+    <span class="filter-chip" data-filter="status" data-value="blocked"><span style="color:#6B7280">●</span> 受阻<span class="count" id="cnt-blocked">0</span></span>
+  </div>
+  <div class="filter-group">
+    <label>优先级：</label>
+    <span class="filter-chip active" data-filter="priority" data-value="all">全部</span>
+    <span class="filter-chip" data-filter="priority" data-value="P0">P0 <span class="count" id="cnt-P0">0</span></span>
+    <span class="filter-chip" data-filter="priority" data-value="P1">P1 <span class="count" id="cnt-P1">0</span></span>
+    <span class="filter-chip" data-filter="priority" data-value="P2">P2 <span class="count" id="cnt-P2">0</span></span>
+    <span class="filter-chip" data-filter="priority" data-value="P3">P3 <span class="count" id="cnt-P3">0</span></span>
+  </div>
+  <div class="filter-group">
+    <label>痛点：</label>
+    <span class="filter-chip active" data-filter="pain" data-value="all">全部</span>
+    <span class="filter-chip" data-filter="pain" data-value="only">仅看痛点</span>
+  </div>
+</div>
+
+<div class="meta">
+  <span><b id="stat-total">0</b> 节点</span>
+  <span class="pain"><b id="stat-pain">0</b> 痛点 (<span id="stat-pct">0</span>%)</span>
+  <span><b id="stat-lanes">0</b> 泳道 × <b id="stat-stages">0</b> 阶段</span>
+  <div class="progress-bar" id="progress-bar" title="项目进度概览">
+    <div class="progress-seg done" id="seg-done"></div>
+    <div class="progress-seg doing" id="seg-doing"></div>
+    <div class="progress-seg blocked" id="seg-blocked"></div>
+    <div class="progress-seg todo" id="seg-todo"></div>
+    <div class="progress-text" id="progress-text">进度 0%</div>
+  </div>
+  <span>P0 剩余 <b style="color:#B91C1C" id="stat-p0-left">0</b> / <b id="stat-p0-total">0</b></span>
+</div>
+
+<div class="help">
+  <b>编辑模式说明：</b>
+  双击节点文字改名字 · 拖拽换位置 · <b>点状态徽章循环切换 待→中→完成→受阻</b> ·
+  <b>点 P0/P1/P2/P3 切换优先级</b> · 点负责人编辑 · 红色按钮切换痛点 · × 删除。所有操作实时保存。
+</div>
+
+<div id="grid-container"></div>
+
+<div class="toast" id="toast"></div>
+
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div>加载数据中...</div>
+</div>
+
+<script>
+const API_BASE = '';
+const LANE_THEMES = {
+  '客户视角':    {bg:'linear-gradient(135deg,#fff8f5 0%,#faece7 100%)',accent:'#D85A30',dark:'#712B13'},
+  '业务方':      {bg:'linear-gradient(135deg,#f5faff 0%,#e6f1fb 100%)',accent:'#378ADD',dark:'#0C447C'},
+  '运营 / 平台': {bg:'linear-gradient(135deg,#f6faef 0%,#eaf3de 100%)',accent:'#639922',dark:'#173404'},
+  '数据':        {bg:'linear-gradient(135deg,#f8f6ff 0%,#eeedfe 100%)',accent:'#7F77DD',dark:'#26215C'}
+};
+
+const STATUS_LABEL = {todo:'待开发', doing:'开发中', done:'已完成', blocked:'受阻'};
+const STATUS_CYCLE = ['todo','doing','done','blocked'];
+const PRIO_CYCLE = ['P0','P1','P2','P3'];
+
+let state = null;
+let editing = false;
+let filters = { status:'all', priority:'all', pain:'all' };
+
+// ── API ──────────────────────────────────────────
+async function apiGet(url) {
+  const res = await fetch(API_BASE + url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+async function apiPost(url, data) {
+  const res = await fetch(API_BASE + url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+async function apiPut(url, data) {
+  const res = await fetch(API_BASE + url, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+async function apiDelete(url) {
+  const res = await fetch(API_BASE + url, {method:'DELETE'});
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function setSyncStatus(status) {
+  const dot = document.getElementById('sync-dot');
+  const txt = document.getElementById('sync-text');
+  dot.className = 'sync-dot ' + (status === 'saving' ? 'saving' : status === 'error' ? 'error' : '');
+  txt.textContent = status === 'saving' ? '保存中...' : status === 'error' ? '同步失败' : '已同步';
+}
+
+async function loadState() {
+  showLoading(true);
+  try {
+    state = await apiGet('/api/activity');
+    // 兼容老数据
+    state.nodes.forEach(n => {
+      n.status = n.status || 'todo';
+      n.priority = n.priority || 'P2';
+      n.owner = n.owner || '';
+    });
+    render();
+    setSyncStatus('ok');
+  } catch (e) {
+    toast('加载失败：' + e.message, true);
+    setSyncStatus('error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function nodeMatchesFilter(n) {
+  if (filters.status !== 'all' && n.status !== filters.status) return false;
+  if (filters.priority !== 'all' && n.priority !== filters.priority) return false;
+  if (filters.pain === 'only' && !n.has_pain) return false;
+  return true;
+}
+
+function render() {
+  if (!state) return;
+  const c = document.getElementById('grid-container');
+  let html = '<div class="grid">';
+  html += '<div class="corner"></div>';
+  state.stages.forEach(s => {
+    html += `<div class="stage-head"><div class="stage-title">${escapeHtml(s)}</div><div class="stage-sub">${escapeHtml(state.stage_desc[s]||'')}</div></div>`;
+  });
+  state.lanes.forEach(lane => {
+    const theme = LANE_THEMES[lane] || LANE_THEMES['客户视角'];
+    const items = state.nodes.filter(n => n.lane === lane);
+    const painCnt = items.filter(n => n.has_pain).length;
+    const doneCnt = items.filter(n => n.status === 'done').length;
+    html += `<div class="lane-head" style="background:${theme.bg};border-left:4px solid ${theme.accent};">
+      <div class="lane-title" style="color:${theme.dark};">${escapeHtml(lane)}</div>
+      <div class="lane-sub">${escapeHtml(state.lane_desc[lane]||'')}</div>
+      <div class="lane-stats"><b style="color:${theme.accent};">${items.length}</b> 节点 · <b style="color:#10B981;">${doneCnt}</b> 完成 · <b style="color:#A32D2D;">${painCnt}</b> 痛点</div>
+    </div>`;
+    state.stages.forEach(stage => {
+      const cellItems = items.filter(n => n.stage === stage);
+      html += `<div class="cell ${cellItems.length===0?'empty':''}" data-lane="${escapeHtml(lane)}" data-stage="${escapeHtml(stage)}">`;
+      cellItems.forEach((n) => {
+        const matched = nodeMatchesFilter(n);
+        let cls = `node status-${n.status} prio-${n.priority}`;
+        if (n.has_pain) cls += ' pain';
+        if (!matched) cls += ' dimmed';
+
+        const statusLabel = STATUS_LABEL[n.status] || '待开发';
+        const ownerHtml = n.owner
+          ? `<span class="owner-tag" data-id="${n.id}" title="点击编辑负责人">@${escapeHtml(n.owner)}</span>`
+          : `<span class="owner-tag empty" data-id="${n.id}" title="点击设置负责人">+负责人</span>`;
+
+        let roleTag = '';
+        if (n.view_raw === '市场 PM') roleTag = '<span class="tag">市场PM</span>';
+        else if (n.view_raw === '活动 PM') roleTag = '<span class="tag">活动PM</span>';
+
+        html += `<div class="${cls}" data-id="${n.id}" draggable="true" title="${escapeHtml(n.pain||'')}">
+          <div class="node-head">
+            <span class="status-badge ${n.status}" data-id="${n.id}" title="点击切换状态">
+              <span class="dot"></span>${statusLabel}
+            </span>
+            <span class="prio-badge ${n.priority}" data-id="${n.id}" title="点击切换优先级">${n.priority}</span>
+            ${ownerHtml}
+          </div>
+          ${roleTag}<span class="node-text" data-id="${n.id}">${escapeHtml(n.node)}</span>
+          <div class="node-actions">
+            <button class="btn-pain ${n.has_pain?'active':''}" data-id="${n.id}" title="切换痛点">●</button>
+            <button class="btn-del" data-id="${n.id}" title="删除">×</button>
+          </div>
+        </div>`;
+      });
+      html += `<button class="add-node" data-lane="${escapeHtml(lane)}" data-stage="${escapeHtml(stage)}">+ 添加节点</button>`;
+      html += '</div>';
+    });
+  });
+  html += '</div>';
+  c.innerHTML = html;
+
+  renderStats();
+  bindCellEvents();
+}
+
+function renderStats() {
+  const total = state.nodes.length;
+  const painNum = state.nodes.filter(n=>n.has_pain).length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pain').textContent = painNum;
+  document.getElementById('stat-pct').textContent = total ? Math.round(painNum*100/total) : 0;
+  document.getElementById('stat-lanes').textContent = state.lanes.length;
+  document.getElementById('stat-stages').textContent = state.stages.length;
+
+  // 状态分布
+  const cnt = {todo:0, doing:0, done:0, blocked:0};
+  state.nodes.forEach(n => { cnt[n.status] = (cnt[n.status]||0)+1; });
+  document.getElementById('cnt-all').textContent = total;
+  document.getElementById('cnt-todo').textContent = cnt.todo;
+  document.getElementById('cnt-doing').textContent = cnt.doing;
+  document.getElementById('cnt-done').textContent = cnt.done;
+  document.getElementById('cnt-blocked').textContent = cnt.blocked;
+
+  // 优先级分布
+  const pCnt = {P0:0,P1:0,P2:0,P3:0};
+  state.nodes.forEach(n => { pCnt[n.priority] = (pCnt[n.priority]||0)+1; });
+  document.getElementById('cnt-P0').textContent = pCnt.P0;
+  document.getElementById('cnt-P1').textContent = pCnt.P1;
+  document.getElementById('cnt-P2').textContent = pCnt.P2;
+  document.getElementById('cnt-P3').textContent = pCnt.P3;
+
+  // 进度条
+  const pct = t => total ? (t/total*100).toFixed(1)+'%' : '0%';
+  document.getElementById('seg-done').style.width = pct(cnt.done);
+  document.getElementById('seg-doing').style.width = pct(cnt.doing);
+  document.getElementById('seg-blocked').style.width = pct(cnt.blocked);
+  document.getElementById('seg-todo').style.width = pct(cnt.todo);
+  const donePct = total ? Math.round(cnt.done*100/total) : 0;
+  document.getElementById('progress-text').textContent =
+    `完成 ${cnt.done} · 进行 ${cnt.doing} · 受阻 ${cnt.blocked} · 待开发 ${cnt.todo}（${donePct}%）`;
+
+  // P0 剩余
+  const p0Left = state.nodes.filter(n => n.priority==='P0' && n.status !== 'done').length;
+  document.getElementById('stat-p0-left').textContent = p0Left;
+  document.getElementById('stat-p0-total').textContent = pCnt.P0;
+}
+
+// ── 事件绑定 ──────────────────────────────────────────
+function bindCellEvents() {
+  // 添加节点
+  document.querySelectorAll('.add-node').forEach(b => {
+    b.addEventListener('click', async () => {
+      setSyncStatus('saving');
+      try {
+        await apiPost('/api/nodes', {
+          lane: b.dataset.lane, stage: b.dataset.stage,
+          node_name: '新节点', has_pain: false,
+          status: 'todo', priority: 'P2', owner: '',
+        });
+        await loadState();
+        toast('✅ 节点已添加');
+      } catch (e) { toast('添加失败：' + e.message, true); setSyncStatus('error'); }
+    });
+  });
+
+  // 切换状态（循环 todo → doing → done → blocked → todo）
+  document.querySelectorAll('.status-badge').forEach(b => {
+    b.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (!editing) { toast('请先进入编辑模式'); return; }
+      const nid = +b.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      const idx = STATUS_CYCLE.indexOf(node.status);
+      const newStatus = STATUS_CYCLE[(idx+1) % STATUS_CYCLE.length];
+      setSyncStatus('saving');
+      try {
+        await apiPut(`/api/nodes/${nid}`, { status: newStatus });
+        await loadState();
+        toast(`✅ 状态：${STATUS_LABEL[newStatus]}`);
+      } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+    });
+  });
+
+  // 切换优先级（循环 P0→P1→P2→P3→P0）
+  document.querySelectorAll('.prio-badge').forEach(b => {
+    b.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (!editing) { toast('请先进入编辑模式'); return; }
+      const nid = +b.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      const idx = PRIO_CYCLE.indexOf(node.priority);
+      const newPrio = PRIO_CYCLE[(idx+1) % PRIO_CYCLE.length];
+      setSyncStatus('saving');
+      try {
+        await apiPut(`/api/nodes/${nid}`, { priority: newPrio });
+        await loadState();
+        toast(`✅ 优先级：${newPrio}`);
+      } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+    });
+  });
+
+  // 编辑负责人
+  document.querySelectorAll('.owner-tag').forEach(t => {
+    t.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (!editing) return;
+      const nid = +t.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      const v = prompt('设置负责人（留空清除）：', node.owner || '');
+      if (v === null) return;
+      setSyncStatus('saving');
+      try {
+        await apiPut(`/api/nodes/${nid}`, { owner: v.trim() });
+        await loadState();
+        toast('✅ 已更新负责人');
+      } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+    });
+  });
+
+  // 痛点切换
+  document.querySelectorAll('.btn-pain').forEach(b => {
+    b.addEventListener('click', async e => {
+      e.stopPropagation();
+      const nid = +b.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      const newHasPain = !node.has_pain;
+      let newPain = node.pain || '';
+      if (newHasPain && !newPain) {
+        newPain = prompt('描述这个痛点：', '') || '';
+        if (!newPain) return;
+      }
+      setSyncStatus('saving');
+      try {
+        await apiPut(`/api/nodes/${nid}`, { has_pain: newHasPain, pain: newPain });
+        await loadState();
+        toast(newHasPain ? '✅ 已标记痛点' : '已取消痛点');
+      } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+    });
+  });
+
+  // 删除
+  document.querySelectorAll('.btn-del').forEach(b => {
+    b.addEventListener('click', async e => {
+      e.stopPropagation();
+      const nid = +b.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      if (confirm('删除节点：' + node.node + '？')) {
+        setSyncStatus('saving');
+        try {
+          await apiDelete(`/api/nodes/${nid}`);
+          await loadState();
+          toast('🗑️ 已删除');
+        } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+      }
+    });
+  });
+
+  // 编辑节点文字
+  document.querySelectorAll('.node-text').forEach(t => {
+    t.addEventListener('dblclick', async () => {
+      if (!editing) return;
+      const nid = +t.dataset.id;
+      const node = state.nodes.find(n => n.id === nid);
+      if (!node) return;
+      const newText = prompt('修改节点文字：', node.node);
+      if (newText !== null && newText.trim()) {
+        setSyncStatus('saving');
+        try {
+          await apiPut(`/api/nodes/${nid}`, { node_name: newText.trim() });
+          await loadState();
+          toast('✅ 已更新');
+        } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+      }
+    });
+  });
+
+  // 痛点描述编辑
+  document.querySelectorAll('.node.pain').forEach(n => {
+    n.addEventListener('dblclick', async e => {
+      if (e.target.closest('.node-text, .status-badge, .prio-badge, .owner-tag, .node-actions')) return;
+      if (!editing) return;
+      const nid = +n.dataset.id;
+      const node = state.nodes.find(x => x.id === nid);
+      if (!node) return;
+      const np = prompt('修改痛点描述：', node.pain || '');
+      if (np !== null) {
+        setSyncStatus('saving');
+        try {
+          await apiPut(`/api/nodes/${nid}`, { pain: np });
+          await loadState();
+          toast('✅ 痛点已更新');
+        } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+      }
+    });
+  });
+
+  // 拖拽
+  let dragId = null;
+  document.querySelectorAll('.node').forEach(n => {
+    n.addEventListener('dragstart', e => {
+      if (!editing) { e.preventDefault(); return; }
+      dragId = +n.dataset.id;
+      e.dataTransfer.effectAllowed = 'move';
+    });
+  });
+  document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('dragover', e => { if (editing) { e.preventDefault(); cell.style.background = '#FEF3C7'; }});
+    cell.addEventListener('dragleave', () => { cell.style.background = ''; });
+    cell.addEventListener('drop', async e => {
+      e.preventDefault();
+      cell.style.background = '';
+      if (dragId === null) return;
+      setSyncStatus('saving');
+      try {
+        await apiPut(`/api/nodes/${dragId}`, { lane: cell.dataset.lane, stage: cell.dataset.stage });
+        await loadState();
+        toast('✅ 已移动');
+      } catch (err) { toast('失败：' + err.message, true); setSyncStatus('error'); }
+      dragId = null;
+    });
+  });
+}
+
+// ── 筛选器 ────────────────────────────────────────
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const type = chip.dataset.filter;
+    const val = chip.dataset.value;
+    document.querySelectorAll(`.filter-chip[data-filter="${type}"]`).forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    filters[type] = val;
+    render();
+  });
+});
+
+// ── 工具栏按钮 ────────────────────────────────────────
+document.getElementById('btn-edit').addEventListener('click', () => {
+  editing = !editing;
+  document.body.classList.toggle('editing', editing);
+  const b = document.getElementById('btn-edit');
+  if (editing) { b.textContent = '✓ 退出编辑'; b.classList.add('active'); toast('已进入编辑模式'); }
+  else { b.textContent = '✏️ 进入编辑模式'; b.classList.remove('active'); toast('已退出'); }
+});
+document.getElementById('btn-refresh').addEventListener('click', async () => {
+  await loadState();
+  toast('✅ 已刷新');
+});
+document.getElementById('btn-print').addEventListener('click', () => window.print());
+document.getElementById('btn-reset').addEventListener('click', async () => {
+  if (confirm('重置为初始数据？所有改动会丢失。')) {
+    if (confirm('再次确认：真的要重置？')) {
+      setSyncStatus('saving');
+      try {
+        await apiDelete('/api/nodes/activity/1');
+        await apiPost('/api/init-data', {});
+        await loadState();
+        toast('已重置');
+      } catch (e) { toast('失败：' + e.message, true); setSyncStatus('error'); }
+    }
+  }
+});
+
+function toast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function showLoading(show) { document.getElementById('loading').classList.toggle('show', show); }
+
+// 启动
+loadState();
+
+// 自动每 30 秒静默刷新
+setInterval(async () => {
+  if (!editing) {
+    try { state = await apiGet('/api/activity');
+      state.nodes.forEach(n => { n.status = n.status||'todo'; n.priority = n.priority||'P2'; n.owner = n.owner||''; });
+      render();
+    } catch(e) {}
+  }
+}, 30000);
+</script>
+</body>
+</html>

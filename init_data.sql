@@ -1,0 +1,66 @@
+-- 泳道图初始数据 · 52 个节点
+-- Generated from 市场活动全链路节点盘点.xlsx
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S1 筹备期','客户看到活动推广海报','',0,'客户',0,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S1 筹备期','客户收到参会邀约通知','销售转发，手机号缺失或其他个人信息不对，没有参会体验感',1,'客户',1,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','提交报名情况','',0,'客户',2,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','提交报名情况','报名结果不清晰，最终报名结果反馈慢',1,'客户',3,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','提交差旅需求','',0,'客户',4,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','修改报名情况','',0,'客户',5,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','修改差旅需求','',0,'客户',6,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S1 筹备期','系统创建活动','活动信息表格流转效率低下',1,'活动运营',7,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S1 筹备期','配置报名问卷','固定字段的选项无法自行勾选，不同活动中用户容易产生理解偏差，从而误选',1,'活动运营',8,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S1 筹备期','配置活动KV','',0,'活动运营',9,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S1 筹备期','配置他人权限','内部通讯录不完善，无法立即配置权限，需要单独申请',1,'活动运营',10,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S1 筹备期','配置活动相关物料','1.活动主页无法关联相册等链接，只能在微站额外配置H5
+2.用户无法在活动系统查看自己所在桌号等信息',1,'活动运营',11,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S2 报名期','导入活动名单','模板字段较多，且PM提供的名单不一定有相应必填字段（固定字段，必填是否能满足系统 需 求？）',1,'活动运营',12,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S3 审核期','审核活动名单','后台无法进行批量选择并审核，小程序也只能单个审核或全部通过',1,'活动运营',13,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S4 会前','发送活动短信','1.消息设置默认全打开，容易误发短信；
+2.选择发送范围时无法筛选用户身份
+3.无法根据上传的用户住宿信息、桌号信息直接筛选发短信，需要额外上传手机号名单，且发送结果无法关联用户的活动数据
+4.无短信标题概览短信内容，需要进行分类发送多个批次的短信时，只能通过逐一查看短信内容看发送情况',1,'活动运营',14,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S5 现场签到','监控签到数据','1.后台&小程序无实时数据看板，无法即时查看各个身份/补签签到情况；
+2.外部agency退出小程序后无法查看当前活动数据',1,'活动运营',15,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S5 现场签到','协助现场进行手动签到','1.审核人无法在小程序帮客户签到；
+2.小程序无法查看用户是否签到',1,'活动运营',16,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S5 现场签到','现场客户补签','1、销售人工确认是否为真实客户 2、若客户已在中台数据库，是否能用 AI 判断为是存量客户，直接系统 判断补签成功？',1,'活动运营',17,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'数据','S7 活动后','导出并整理签到数据','1.下载的数据信息不全，无报名方式、报名时间、个性问卷内容；
+2.导出带手机号的表单无活动相关的信息，需要二次匹配
+3.无法先在后台筛选字段再进行导出，只能导出全量用户数据
+4.导出的表单表头字段太多，一般活动只需要用部分字段，整理较为费时
+5.下载活动名单时无法同步下载整体活动情况，需要人工统计',1,'数据',18,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'数据','S7 活动后','查看过往活动签到情况','小程序无法直接搜索活动，只能手动滑动查找，且近期结束的活动在最下面',1,'数据',19,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'数据','S7 活动后','批量下载活动数据','需要进入逐个活动进行下载、名单，且导出任务列表及下载的数据表不显示活动名称，需要逐一下载并修改表单名称',1,'数据',20,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S1 筹备期','对客户的需求调研','目前缺失活动前的需求调研',1,'客户',21,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'运营 / 平台','S7 活动后','整理会议资料','',0,'活动运营',22,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S2 报名期','活动前确认邀请名额','客户每日咨询审核是否通过，接待量较大。且有未通过用户质疑审核标准，要求公布审核维度。',1,'市场 PM',23,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S2 报名期','活动前确认实际到场人数','无提前告知销售参会限额人数，导致邀约参会人数超额，私域在发送邀约参会后还要重复跟客户沟通人数已满无法参加的情况',1,'市场 PM',24,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S4 会前','参会提醒','作业分为线上和线下同步进行，客户可自行选择线上/线下提交作业，但又要收集作业进行批改，导致收集难度高',1,'市场 PM',25,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S7 活动后','合作邀约','部分达人报名但无添加私域，导致无法进行建联，需通过报名手机号主动添加才可完成建联',1,'市场 PM',26,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','报名流程明确','',0,'市场 PM',27,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','邀请函交付','',0,'市场 PM',28,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S6 活动进行','活动指引','',0,'市场 PM',29,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S6 活动进行','vip 接待','',0,'市场 PM',30,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S1 筹备期','客户首次接受到活动信息','邀请函物料五花八门、记忆点弱；客户对平台方活动期待度天然低，不像参加微信公开课会主动关注',1,'客户',31,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S1 筹备期','客户评估是否参加','核心诉求：不被骗，议程通知和现场实际差异大会有强烈"时间被损耗"的被骗感；缺乏分会场/垂类议程让客户"每一分钟都被充分利用"',1,'客户',32,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S7 活动后','客户档案自动沉淀','客户数据底层未打通，同一客户在不同活动是不同记录，参会轨迹断裂；一码通行未落地前档案断裂（同一客户在不同活动是不同记录）',1,'客户',33,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S2 报名期','收到审核通过通知','客户报名后，审批通过反馈容易忽略（目前是短信）,会议流程不熟悉',1,'客户',34,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S4 会前','提供差旅需求','客户反复改行程，让客户自己在系统里填门槛高，所以走销售人工；链路太长易出错',1,'客户',35,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S4 会前','行前指引','现有 Briefing Book 是电子版，销售不一定转发，也不是动态更新；议程变动客户接收不到；或者客户想看的时候要回翻记录找；',1,'客户',36,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S6 活动进行','拍照记录关键信息+会后得到的PPT','会议现场拍照的内容质量差（拍到一堆头）；分享给同事也看不懂要点，只是一个拍照内容；会后PPT脱敏2-3天才发客户，太慢；',1,'客户',37,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'客户视角','S6 活动进行','一键生成专属参会报告（新能力）','客户自己用豆包/飞书整理，但结果与官方重点不一致；',1,'客户',38,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S7 活动后','复盘数据','',0,'市场 PM',39,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','确认报名形式','对齐报名字段，必须和可选，灵活配置',1,'活动 PM',40,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','确认 TA 名单','TA 锁定时间 节点为会前 1 天',1,'活动 PM',41,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','短信通知内容及节奏','1、短信内容审核，是否仍然 有时间 的限制？无法随时发送
+2、零散客户的补发需 求',1,'活动 PM',42,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','确认是否与企微私域联动','已加企微用户，签到时，只能发送"签到"才能弹出微站链接，能否有更优解？目前也是 OK ，只是速度有些慢',1,'活动 PM',43,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','确认活动问卷','客户填写时，信息部分需 简化，且要能与客户身份做匹配',1,'活动 PM',44,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','提供客户的参会指引','目前为 PDF 形式由销售会前发送，or 有更好的方式？',1,'活动 PM',45,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S1 筹备期','收集客户差旅需求','',0,'活动 PM',46,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S2 报名期','会议排桌及桌卡','直至开始前都会在变动调整',1,'活动 PM',47,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S6 活动进行','签到与补签到','1、补签到现为销售或市场 PM 沟通确认，是否为真实客户
+2、能否与数据库关联，若客户已存在数据 库中，自动判断为真实客户，直接审核通过？？',1,'活动 PM',48,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S6 活动进行','用户桌号查看','活动前导入，但现场 会有一些变化，无法临时调整 （目前可控）',1,'活动 PM',49,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S7 活动后','TA 到场率，实际到场人数','能否用数据库已有数据 ，先做清洗？补签时，客户身份自行选择，会有一定误差',1,'活动 PM',50,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
+INSERT INTO nodes (activity_id,lane,stage,node_name,pain,has_pain,view_raw,sort_order,created_at,updated_at) VALUES(1,'业务方','S7 活动后','问卷收集','提升填写数量',1,'活动 PM',51,'2026-05-05T16:37:05.374441','2026-05-05T16:37:05.374441');
